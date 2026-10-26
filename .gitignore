@@ -1,0 +1,12 @@
+.env
+.env.*
+*.local
+node_modules/
+cache/
+*.log
+temp/
+
+# File sao luu va script kiem tra chi dung tren may local
+/backend/server.before-auth.js
+/backend/server.before-messaging.js
+/backend/test-db.js

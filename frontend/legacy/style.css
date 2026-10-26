@@ -1,0 +1,86 @@
+﻿body {
+  margin: 0;
+  padding: 12px;
+  background: #f2f4f7;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+h1 { font-size: 25px; margin-bottom: 4px; }
+h2 { font-size: 18px; }
+.subtitle, .footer { color: #666; font-size: 13px; }
+label { display: block; margin: 10px 0; }
+input {
+  display: block;
+  width: 95%;
+  max-width: 440px;
+  padding: 9px;
+  margin-top: 4px;
+  border: 1px solid #aaa;
+  font-size: 16px;
+}
+button {
+  padding: 9px 14px;
+  margin: 4px 0;
+  background: #2359a8;
+  border: 1px solid #2359a8;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+button:focus, input:focus { outline: 2px solid #8ab4f8; }
+hr { margin: 22px 0; border: 0; border-top: 1px solid #ddd; }
+.identity {
+  margin: 15px 0;
+  padding: 10px;
+  background: #eef3fa;
+}
+#logoutButton { float: right; margin-top: -5px; }
+.columns { width: 100%; }
+.sidebar, .chat { margin-top: 16px; }
+.sidebar {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.chat { min-width: 0; }
+#searchResults, #conversationList { margin: 8px 0 18px; }
+.item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #f1f4f8;
+  color: #222;
+  border: 1px solid #ddd;
+  overflow-wrap: anywhere;
+}
+#messages {
+  height: 260px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin: 10px 0;
+  background: #fff;
+}
+.message {
+  padding: 8px;
+  margin-bottom: 8px;
+  background: #f0f4fa;
+  overflow-wrap: anywhere;
+}
+.message strong { display: block; font-size: 12px; color: #555; }
+#notice { margin: 10px 0; color: #175c2c; }
+#notice.error { color: #a31515; }
+#messageForm input { max-width: none; width: 95%; }
+@media screen and (min-width: 650px) {
+  .columns { display: table; table-layout: fixed; border-spacing: 12px; }
+  .sidebar, .chat { display: table-cell; vertical-align: top; }
+  .sidebar { width: 35%; }
+  .chat { width: 65%; }
+}

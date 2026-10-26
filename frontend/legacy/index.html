@@ -1,0 +1,87 @@
+﻿<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yume Chat</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>Yume Chat</h1>
+  <p class="subtitle">Trò chuyện đơn giản, nhẹ và nhanh.</p>
+  <div id="notice" role="status"></div>
+
+  <section id="authPanel">
+    <h2>Đăng nhập</h2>
+    <form id="loginForm">
+      <label>Username
+        <input id="loginUsername" type="text" maxlength="24"
+          autocomplete="username" required>
+      </label>
+      <label>Mật khẩu
+        <input id="loginPassword" type="password"
+          autocomplete="current-password" required>
+      </label>
+      <button type="submit">Đăng nhập</button>
+    </form>
+
+    <hr>
+    <h2>Tạo tài khoản</h2>
+    <form id="registerForm">
+      <label>Tên hiển thị
+        <input id="registerName" type="text" maxlength="60" required>
+      </label>
+      <label>Username (không cần nhập @)
+        <input id="registerUsername" type="text" maxlength="24"
+          autocomplete="username" required>
+      </label>
+      <label>Mật khẩu (ít nhất 8 byte)
+        <input id="registerPassword" type="password"
+          autocomplete="new-password" required>
+      </label>
+      <button type="submit">Đăng ký</button>
+    </form>
+  </section>
+
+  <section id="chatPanel" style="display:none">
+    <div class="identity">
+      <span id="currentUserLabel"></span>
+      <button type="button" id="logoutButton">Đăng xuất</button>
+    </div>
+
+    <div class="columns">
+      <div class="sidebar">
+        <h2>Tìm người dùng</h2>
+        <form id="searchForm">
+          <label>Username
+            <input id="searchInput" type="text"
+              placeholder="@username" maxlength="25" required>
+          </label>
+          <button type="submit">Tìm kiếm</button>
+        </form>
+        <div id="searchResults"></div>
+
+        <h2>Cuộc trò chuyện</h2>
+        <div id="conversationList"></div>
+      </div>
+
+      <div class="chat">
+        <h2 id="conversationTitle">Chọn một người để bắt đầu</h2>
+        <div id="messages" aria-live="polite"></div>
+        <form id="messageForm">
+          <label>Tin nhắn
+            <input id="messageInput" type="text" maxlength="4000"
+              autocomplete="off" required>
+          </label>
+          <button type="submit" id="sendButton">Gửi</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <p class="footer">Yume Chat — phiên bản thử nghiệm</p>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
