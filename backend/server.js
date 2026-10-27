@@ -753,7 +753,7 @@ function cloudinaryReady() {
 const imageUpload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 9 * 1024 * 1024,
     files: 1
   },
   fileFilter: function (_req, file, callback) {
