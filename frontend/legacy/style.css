@@ -1,4 +1,4 @@
-﻿body {
+body {
   margin: 0;
   padding: 12px;
   background: #f2f4f7;
@@ -83,4 +83,499 @@ hr { margin: 22px 0; border: 0; border-top: 1px solid #ddd; }
   .sidebar, .chat { display: table-cell; vertical-align: top; }
   .sidebar { width: 35%; }
   .chat { width: 65%; }
+}
+
+.unread-badge {
+  display: inline-block;
+  min-width: 18px;
+  padding: 2px 5px;
+  margin-left: 4px;
+  background: #d92d20;
+  color: #fff;
+  border: 1px solid #b42318;
+  text-align: center;
+  font-weight: bold;
+}
+
+.avatar-preview-image {
+  max-width: 100px;
+  max-height: 100px;
+  border: 1px solid #ddd;
+}
+.chat-image {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;
+  height: auto;
+}
+.chat-sticker {
+  padding: 12px;
+  margin-top: 5px;
+  background: #fce7f3;
+  border: 1px solid #f9a8d4;
+  color: #831843;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#soundToggle {
+  margin-right: 8px;
+}
+
+.list-avatar {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+.user-bio {
+  margin: 4px 0 2px 40px;
+  color: #666;
+  font-size: 12px;
+  font-weight: normal;
+  white-space: normal;
+}
+
+/* Sticker Capoo - toi uu cho man hinh nho */
+.sticker-choice {
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  padding: 2px;
+  margin: 2px;
+  vertical-align: middle;
+}
+
+.sticker-choice img {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+
+
+.chat-sticker-image {
+  display: block;
+  width: 96px;
+  height: 96px;
+  max-width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+
+/* Avatar tron, phong cach mang xa hoi */
+.list-avatar,
+.avatar-preview-image {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  border: 1px solid #d0d5dd;
+  background: #f2f4f7;
+}
+
+.avatar-preview-image {
+  width: 88px;
+  height: 88px;
+}
+
+
+/* Yume Chat: ho so cong khai va trang thai tin nhan */
+.message-status {
+  display: block;
+  margin-top: 4px;
+  text-align: right;
+  font-size: 11px;
+  color: #687385;
+}
+
+.profile-link-button,
+.profile-close-button {
+  display: inline-block;
+  width: auto;
+  margin: 3px 6px 8px 0;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.public-profile-panel {
+  display: none;
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: #f8fafc;
+  overflow-wrap: anywhere;
+}
+
+.public-profile-panel h3 {
+  margin: 8px 0 4px;
+}
+
+.public-profile-avatar {
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #d0d5dd;
+  background: #f2f4f7;
+}
+
+.public-profile-username {
+  margin: 3px 0;
+  color: #687385;
+}
+
+.public-profile-bio {
+  margin: 8px 0 0;
+}
+/* Thoi gian gui tin nhan */
+.message-time {
+  display: block;
+  margin-top: 4px;
+  color: #687385;
+  font-size: 11px;
+  text-align: right;
+}
+
+/* YUME CHAT - GIAO DIEN GON NHE */
+
+/* Tong the: xanh duong, trang, de doc */
+body {
+  padding: 10px;
+  background: #edf2f8;
+  color: #263449;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid #d9e2ee;
+}
+
+h1 {
+  margin-top: 4px;
+  color: #174a87;
+  font-size: 25px;
+}
+
+h2 {
+  margin-top: 16px;
+  margin-bottom: 10px;
+  color: #23466f;
+  font-size: 18px;
+}
+
+.subtitle,
+.footer {
+  color: #65758b;
+}
+
+/* Nut bam ro rang, de bam tren man hinh nho */
+button {
+  padding: 9px 13px;
+  border: 1px solid #2359a8;
+  border-radius: 5px;
+  background: #2359a8;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+button:focus,
+input:focus {
+  outline: 2px solid #8ab4f8;
+}
+
+input {
+  box-sizing: border-box;
+  max-width: 100%;
+  border: 1px solid #c5d0df;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #263449;
+}
+
+#messageForm input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Thong tin tai khoan va cong cu */
+.identity {
+  padding: 10px;
+  background: #eaf2ff;
+  border: 1px solid #ceddf3;
+  overflow: hidden;
+}
+
+#logoutButton {
+  margin-left: 5px;
+}
+
+#soundToggle,
+#profileToggle {
+  margin-top: 6px;
+}
+
+.profile-tools {
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #e0e7f0;
+  background: #f8fafc;
+}
+
+#profilePanel {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #d9e2ee;
+}
+
+/* Danh sach tim kiem va tro chuyen */
+.sidebar {
+  padding: 12px;
+  border: 1px solid #d9e2ee;
+  background: #f8fafc;
+}
+
+#searchResults,
+#conversationList {
+  margin: 8px 0 18px;
+}
+
+.item {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  border: 1px solid #dbe4ef;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #263449;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.list-avatar {
+  width: 38px;
+  height: 38px;
+  margin-right: 7px;
+  border: 1px solid #d0dbea;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.user-bio {
+  margin-top: 5px;
+  color: #65758b;
+  font-size: 12px;
+  font-weight: normal;
+  word-wrap: break-word;
+}
+
+.unread-badge {
+  display: inline-block;
+  min-width: 18px;
+  padding: 2px 5px;
+  border: 1px solid #bd3029;
+  border-radius: 10px;
+  background: #d92d20;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Khung chat */
+.chat {
+  min-width: 0;
+}
+
+#conversationTitle {
+  padding: 10px;
+  border-bottom: 2px solid #d8e5f6;
+  background: #ffffff;
+  color: #174a87;
+  word-wrap: break-word;
+}
+
+#messages {
+  box-sizing: border-box;
+  width: 100%;
+  height: 280px;
+  padding: 10px;
+  overflow-y: auto;
+  border: 1px solid #d9e2ee;
+  border-radius: 6px;
+  background: #f7faff;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 9px;
+  border: 1px solid #dce6f2;
+  border-left: 3px solid #83a9dc;
+  border-radius: 6px;
+  background: #ffffff;
+  word-wrap: break-word;
+}
+
+.message strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #31577f;
+  font-size: 12px;
+}
+
+.message-time,
+.message-status {
+  display: block;
+  margin-top: 5px;
+  color: #65758b;
+  font-size: 11px;
+  text-align: right;
+}
+
+.chat-image {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.chat-sticker-image {
+  display: block;
+  width: 96px;
+  height: 96px;
+  max-width: 100%;
+}
+
+/* Cong cu gui anh va sticker */
+#mediaTools {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #d9e2ee;
+  background: #f8fafc;
+}
+
+#stickerPicker {
+  margin-top: 6px;
+  padding: 5px;
+  background: #ffffff;
+  border: 1px solid #e0e7f0;
+}
+
+.sticker-choice {
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  margin: 2px;
+  padding: 2px;
+  border: 1px solid #dbe4ef;
+  background: #ffffff;
+  vertical-align: middle;
+}
+
+.sticker-choice img {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
+/* Ho so cong khai */
+.public-profile-panel {
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #d4e0ef;
+  border-radius: 6px;
+  background: #f8fafc;
+  word-wrap: break-word;
+}
+
+.public-profile-avatar {
+  display: block;
+  width: 72px;
+  height: 72px;
+  border: 1px solid #d0dbea;
+  border-radius: 50%;
+}
+
+.public-profile-username {
+  color: #65758b;
+}
+
+.public-profile-bio {
+  margin-top: 8px;
+}
+
+.profile-link-button,
+.profile-close-button {
+  display: inline-block;
+  width: auto;
+  margin: 3px 4px 6px 0;
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
+/* Thong bao */
+#notice {
+  margin: 10px 0;
+  padding: 7px;
+  color: #17623a;
+  word-wrap: break-word;
+}
+
+#notice.error {
+  color: #a31515;
+}
+
+/* Man hinh hep: khong dung Grid/Flexbox */
+@media screen and (max-width: 400px) {
+  body {
+    padding: 4px;
+    font-size: 15px;
+  }
+
+  .wrap {
+    padding: 8px;
+  }
+
+  #messages {
+    height: 220px;
+    padding: 6px;
+  }
+
+  .message {
+    padding: 7px;
+  }
+
+  .sticker-choice {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sticker-choice img {
+    width: 42px;
+    height: 42px;
+  }
+}
+/* Anh co the bam de xem kich thuoc day du */
+.chat-image,
+.avatar-preview-image,
+.public-profile-avatar {
+  cursor: pointer;
 }

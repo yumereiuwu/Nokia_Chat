@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 <head>
   <meta charset="utf-8">
@@ -47,10 +47,34 @@
   <section id="chatPanel" style="display:none">
     <div class="identity">
       <span id="currentUserLabel"></span>
+      <button type="button" id="soundToggle">Bật âm báo</button>
       <button type="button" id="logoutButton">Đăng xuất</button>
     </div>
 
-    <div class="columns">
+    <div class="profile-tools">
+    <button type="button" id="profileToggle">Hồ sơ của tôi</button>
+    <div id="profilePanel" style="display:none">
+      <h2>Hồ sơ cá nhân</h2>
+      <div id="avatarPreview"></div>
+      <form id="profileForm">
+        <label>Tên hiển thị
+          <input id="profileDisplayName" type="text" maxlength="60">
+        </label>
+        <label>Giới thiệu (tối đa 160 ký tự)
+          <input id="profileBio" type="text" maxlength="160">
+        </label>
+        <button type="submit">Lưu hồ sơ</button>
+      </form>
+      <form id="avatarForm">
+        <label>Chọn ảnh đại diện
+          <input id="avatarFile" name="image" type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif">
+        </label>
+        <button type="submit">Tải avatar lên</button>
+      </form>
+    </div>
+  </div>
+  <div class="columns">
       <div class="sidebar">
         <h2>Tìm người dùng</h2>
         <form id="searchForm">
@@ -69,6 +93,62 @@
       <div class="chat">
         <h2 id="conversationTitle">Chọn một người để bắt đầu</h2>
         <div id="messages" aria-live="polite"></div>
+        <div id="mediaTools">
+          <label>Chọn ảnh để gửi
+            <input id="messageImageFile" type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif">
+          </label>
+          <button type="button" id="sendImageButton">Gửi ảnh</button>
+
+          <h2>Sticker</h2>
+          <div id="stickerPicker">
+    <button type="button" class="sticker-choice" data-sticker="capoo01" title="Sticker Capoo 1">
+      <img src="/stickers/capoo/thumb/capoo01.png" alt="Capoo 1">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo02" title="Sticker Capoo 2">
+      <img src="/stickers/capoo/thumb/capoo02.png" alt="Capoo 2">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo03" title="Sticker Capoo 3">
+      <img src="/stickers/capoo/thumb/capoo03.png" alt="Capoo 3">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo04" title="Sticker Capoo 4">
+      <img src="/stickers/capoo/thumb/capoo04.png" alt="Capoo 4">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo05" title="Sticker Capoo 5">
+      <img src="/stickers/capoo/thumb/capoo05.png" alt="Capoo 5">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo06" title="Sticker Capoo 6">
+      <img src="/stickers/capoo/thumb/capoo06.png" alt="Capoo 6">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo07" title="Sticker Capoo 7">
+      <img src="/stickers/capoo/thumb/capoo07.png" alt="Capoo 7">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo08" title="Sticker Capoo 8">
+      <img src="/stickers/capoo/thumb/capoo08.png" alt="Capoo 8">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo09" title="Sticker Capoo 9">
+      <img src="/stickers/capoo/thumb/capoo09.png" alt="Capoo 9">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo10" title="Sticker Capoo 10">
+      <img src="/stickers/capoo/thumb/capoo10.png" alt="Capoo 10">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo11" title="Sticker Capoo 11">
+      <img src="/stickers/capoo/thumb/capoo11.png" alt="Capoo 11">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo12" title="Sticker Capoo 12">
+      <img src="/stickers/capoo/thumb/capoo12.png" alt="Capoo 12">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo13" title="Sticker Capoo 13">
+      <img src="/stickers/capoo/thumb/capoo13.png" alt="Capoo 13">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo14" title="Sticker Capoo 14">
+      <img src="/stickers/capoo/thumb/capoo14.png" alt="Capoo 14">
+    </button>
+    <button type="button" class="sticker-choice" data-sticker="capoo15" title="Sticker Capoo 15">
+      <img src="/stickers/capoo/thumb/capoo15.png" alt="Capoo 15">
+    </button>
+</div>
+        </div>
         <form id="messageForm">
           <label>Tin nhắn
             <input id="messageInput" type="text" maxlength="4000"
@@ -82,6 +162,10 @@
 
   <p class="footer">Yume Chat — phiên bản thử nghiệm</p>
 </div>
+<audio id="notificationSound" preload="auto" src="/notify.mp3"></audio>
 <script src="/app.js"></script>
 </body>
 </html>
+
+
+
