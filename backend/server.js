@@ -780,7 +780,7 @@ function receiveImage(req, res, next) {
 
     res.status(status).json({
       error: err.code === 'LIMIT_FILE_SIZE'
-        ? 'Ảnh tối đa 5 MB.'
+        ? 'Ảnh tối đa 9 MiB.'
         : (err.message || 'Không thể nhận ảnh.')
     });
   });

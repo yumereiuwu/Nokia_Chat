@@ -766,8 +766,8 @@
       return false;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      notice('Ảnh tối đa 5 MB.', true);
+    if (file.size > 9 * 1024 * 1024) {
+      notice('Ảnh tối đa 9 MiB.', true);
       return false;
     }
 
@@ -821,8 +821,8 @@
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      notice('Ảnh tối đa 5 MB.', true);
+    if (file.size > 9 * 1024 * 1024) {
+      notice('Ảnh tối đa 9 MiB.', true);
       return;
     }
 
