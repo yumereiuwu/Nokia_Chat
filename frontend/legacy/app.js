@@ -543,6 +543,36 @@
       stickerImg.width = 96;
       stickerImg.height = 96;
       body.appendChild(stickerImg);
+    } else if (type === 'file' && message.fileUrl) {
+      var fileBox = document.createElement('div');
+      fileBox.className = 'file-attachment';
+
+      var fileLink = document.createElement('a');
+      fileLink.className = 'file-download-link';
+      fileLink.href = message.fileUrl;
+      fileLink.target = '_blank';
+      fileLink.appendChild(document.createTextNode(
+        'Tải xuống: ' + (message.fileName || 'Tệp đính kèm')
+      ));
+      fileBox.appendChild(fileLink);
+
+      var fileInfo = document.createElement('div');
+      fileInfo.className = 'file-size';
+
+      var fileBytes = Number(message.fileSize || 0);
+      var fileSizeLabel = '';
+
+      if (fileBytes > 0) {
+        if (fileBytes >= 1048576) {
+          fileSizeLabel = (fileBytes / 1048576).toFixed(2) + ' MiB';
+        } else {
+          fileSizeLabel = Math.max(1, Math.round(fileBytes / 1024)) + ' KiB';
+        }
+      }
+
+      fileInfo.appendChild(document.createTextNode(fileSizeLabel));
+      fileBox.appendChild(fileInfo);
+      body.appendChild(fileBox);
     } else {
       body.appendChild(document.createTextNode(message.body || ''));
     }
@@ -702,7 +732,7 @@
     var xhr = new XMLHttpRequest();
     var formData = new FormData();
 
-    formData.append('image', file);
+    formData.append(url === '/api/uploads/file' ? 'file' : 'image', file);
 
     xhr.open('POST', url, true);
     xhr.setRequestHeader('Accept', 'application/json');
@@ -727,7 +757,7 @@
     };
 
     xhr.onerror = function () {
-      callback(new Error('Không thể tải ảnh lên.'));
+      callback(new Error(url === '/api/uploads/file' ? 'Không thể tải tệp lên.' : 'Không thể tải ảnh lên.'));
     };
 
     xhr.send(formData);
@@ -838,6 +868,44 @@
       });
 
       byId('messageImageFile').value = '';
+    });
+  };
+
+  byId('sendFileButton').onclick = function () {
+    var file = byId('messageFileInput').files[0];
+
+    if (!currentConversationId) {
+      notice('Hãy chọn một cuộc trò chuyện trước.', true);
+      return;
+    }
+
+    if (!file) {
+      notice('Hãy chọn tệp muốn gửi.', true);
+      return;
+    }
+
+    if (file.size > 9 * 1024 * 1024) {
+      notice('Tệp tối đa 9 MiB.', true);
+      return;
+    }
+
+    notice('Đang tải tệp lên...');
+
+    uploadFile('/api/uploads/file', file, function (err, result) {
+      if (err) {
+        notice(err.message, true);
+        return;
+      }
+
+      sendAttachment({
+        type: 'file',
+        fileUrl: result.fileUrl,
+        fileName: result.fileName,
+        fileMimeType: result.fileMimeType,
+        fileSize: result.fileSize
+      });
+
+      byId('messageFileInput').value = '';
     });
   };
 

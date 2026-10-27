@@ -579,3 +579,23 @@ input {
 .public-profile-avatar {
   cursor: pointer;
 }
+/* Tep dinh kem Yume Chat */
+.file-attachment {
+  margin-top: 5px;
+  padding: 8px;
+  border: 1px solid #d9e2ee;
+  background: #f8fafc;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+}
+
+.file-download-link {
+  color: #174a87;
+  font-weight: bold;
+}
+
+.file-size {
+  margin-top: 4px;
+  color: #65758b;
+  font-size: 12px;
+}

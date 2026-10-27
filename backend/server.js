@@ -628,7 +628,7 @@ app.get('/api/conversations/:conversationId/messages',
       }
 
       const result = await pool.query(
-        `SELECT id, conversation_id, sender_id, body, created_at, message_type, media_url, sticker_code
+        `SELECT id, conversation_id, sender_id, body, created_at, message_type, media_url, sticker_code, file_name, file_mime_type, file_size
          FROM messages
          WHERE conversation_id = $1
            AND id > $2
@@ -657,8 +657,12 @@ app.get('/api/conversations/:conversationId/messages',
           senderId: row.sender_id,
           body: row.body,
           type: row.message_type || 'text',
-          imageUrl: row.media_url || null,
+          imageUrl: row.message_type === 'image' ? row.media_url : null,
           stickerCode: row.sticker_code || null,
+          fileUrl: row.message_type === 'file' ? row.media_url : null,
+          fileName: row.file_name || null,
+          fileMimeType: row.file_mime_type || null,
+          fileSize: row.file_size == null ? null : Number(row.file_size),
           createdAt: row.created_at
         }))
       });
@@ -772,6 +776,22 @@ const imageUpload = multer({
   }
 });
 
+const genericFileUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 9 * 1024 * 1024, files: 1 }
+});
+
+function receiveGenericFile(req, res, next) {
+  genericFileUpload.single('file')(req, res, function (err) {
+    if (!err) return next();
+    res.status(err.code === 'LIMIT_FILE_SIZE' ? 413 : 400).json({
+      error: err.code === 'LIMIT_FILE_SIZE'
+        ? 'Tệp tối đa 9 MiB.'
+        : (err.message || 'Không thể nhận tệp.')
+    });
+  });
+}
+
 function receiveImage(req, res, next) {
   imageUpload.single('image')(req, res, function (err) {
     if (!err) return next();
@@ -783,6 +803,32 @@ function receiveImage(req, res, next) {
         ? 'Ảnh tối đa 9 MiB.'
         : (err.message || 'Không thể nhận ảnh.')
     });
+  });
+}
+
+function uploadRawFileToCloudinary(buffer, folder, fileName) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+  });
+
+  return new Promise(function (resolve, reject) {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: folder,
+        resource_type: 'raw',
+        use_filename: true,
+        unique_filename: true,
+        filename_override: fileName
+      },
+      function (err, result) {
+        if (err) return reject(err);
+        resolve(result);
+      }
+    );
+    stream.end(buffer);
   });
 }
 
@@ -1027,6 +1073,42 @@ app.post('/api/uploads/image',
     }
   }
 );
+app.post('/api/uploads/file',
+  requireAuth, messagingLimiter, receiveGenericFile, async (req, res) => {
+    if (!cloudinaryReady()) {
+      return res.status(503).json({
+        error: 'Chưa cấu hình Cloudinary trên máy chủ.'
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'Hãy chọn tệp cần gửi.' });
+    }
+
+    const fileName = String(req.file.originalname || 'tep-tin')
+      .replace(/[\\/]/g, '_')
+      .replace(/[\u0000-\u001f\u007f]/g, '_')
+      .trim()
+      .slice(0, 180) || 'tep-tin';
+
+    try {
+      const uploaded = await uploadRawFileToCloudinary(
+        req.file.buffer, 'yume-chat/files', fileName
+      );
+
+      res.status(201).json({
+        fileUrl: uploaded.secure_url,
+        fileName: fileName,
+        fileMimeType: req.file.mimetype || 'application/octet-stream',
+        fileSize: req.file.size
+      });
+    } catch (err) {
+      console.error('Lỗi tải tệp lên:', err.http_code || err.code || 'UNKNOWN');
+      res.status(502).json({ error: 'Không thể tải tệp lên lúc này.' });
+    }
+  }
+);
+
 const ALLOWED_STICKERS = [
   'capoo01',
   'capoo02',
@@ -1063,6 +1145,21 @@ function isYumeCloudinaryUrl(value) {
 }
 
 // Gửi ảnh hoặc sticker đã được chọn từ bộ sticker có sẵn.
+function isYumeCloudinaryRawUrl(value) {
+  if (typeof value !== 'string' || !process.env.CLOUDINARY_CLOUD_NAME) {
+    return false;
+  }
+  try {
+    const parsed = new URL(value);
+    const prefix = '/' + process.env.CLOUDINARY_CLOUD_NAME + '/raw/upload/';
+    return parsed.protocol === 'https:' &&
+      parsed.hostname === 'res.cloudinary.com' &&
+      parsed.pathname.indexOf(prefix) === 0;
+  } catch (_err) {
+    return false;
+  }
+}
+
 app.post('/api/conversations/:conversationId/attachments',
   requireAuth, messagingLimiter, async (req, res) => {
     const conversationId = req.params.conversationId;
@@ -1078,6 +1175,9 @@ app.post('/api/conversations/:conversationId/attachments',
     let body;
     let mediaUrl = null;
     let stickerCode = null;
+    let fileName = null;
+    let fileMimeType = null;
+    let fileSize = null;
 
     if (type === 'image') {
       mediaUrl = req.body.imageUrl;
@@ -1100,6 +1200,33 @@ app.post('/api/conversations/:conversationId/attachments',
       }
 
       body = '[Sticker: ' + stickerCode + ']';
+    } else if (type === 'file') {
+      mediaUrl = req.body.fileUrl;
+
+      fileName = typeof req.body.fileName === 'string'
+        ? req.body.fileName.replace(/[\\/]/g, '_')
+            .replace(/[\u0000-\u001f\u007f]/g, '_').trim().slice(0, 180)
+        : '';
+
+      fileMimeType = typeof req.body.fileMimeType === 'string'
+        ? req.body.fileMimeType.trim().slice(0, 120)
+        : 'application/octet-stream';
+
+      fileSize = Number(req.body.fileSize);
+
+      if (!isYumeCloudinaryRawUrl(mediaUrl)) {
+        return res.status(400).json({ error: 'URL tệp không hợp lệ.' });
+      }
+
+      if (!fileName || !fileMimeType ||
+          !Number.isSafeInteger(fileSize) ||
+          fileSize < 1 || fileSize > 9 * 1024 * 1024) {
+        return res.status(400).json({
+          error: 'Thông tin tệp không hợp lệ hoặc vượt quá 9 MiB.'
+        });
+      }
+
+      body = '[Tệp: ' + fileName + ']';
     } else {
       return res.status(400).json({
         error: 'Loại nội dung không được hỗ trợ.'
@@ -1122,11 +1249,14 @@ app.post('/api/conversations/:conversationId/attachments',
 
       const inserted = await pool.query(
         `INSERT INTO messages
-           (conversation_id, sender_id, body, message_type, media_url, sticker_code)
-         VALUES ($1, $2, $3, $4, $5, $6)
-         RETURNING id, conversation_id, sender_id, body,
-                   created_at, message_type, media_url, sticker_code`,
-        [conversationId, meId, body, type, mediaUrl, stickerCode]
+           (conversation_id, sender_id, body, message_type, media_url,
+            sticker_code, file_name, file_mime_type, file_size)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+         RETURNING id, conversation_id, sender_id, body, created_at,
+                   message_type, media_url, sticker_code,
+                   file_name, file_mime_type, file_size`,
+        [conversationId, meId, body, type, mediaUrl, stickerCode,
+         fileName, fileMimeType, fileSize]
       );
 
       const row = inserted.rows[0];
@@ -1138,8 +1268,12 @@ app.post('/api/conversations/:conversationId/attachments',
           senderId: row.sender_id,
           body: row.body,
           type: row.message_type,
-          imageUrl: row.media_url,
+          imageUrl: row.message_type === 'image' ? row.media_url : null,
           stickerCode: row.sticker_code,
+          fileUrl: row.file_name ? row.media_url : null,
+          fileName: row.file_name,
+          fileMimeType: row.file_mime_type,
+          fileSize: row.file_size == null ? null : Number(row.file_size),
           createdAt: row.created_at
         }
       });
